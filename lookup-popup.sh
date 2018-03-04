@@ -10,14 +10,27 @@ font="Inconsolata:size=12"
 
 showdzen()
 {
-    translation=$(translate $1)
+    query=$(echo $1 | xargs) #trim leading and trailing whitespace
+    if [ -z "$query" ]; then #exit on empty string
+        return 1
+    fi
+    translation=$(translate $query)
     numlines=$(($(echo -e "$translation" | wc -l) - 1))
-    echo "${1}:$(translate $1)" |
+    echo "${query}:$(translate $query)" |
     dzen2 -p 5 -x $x -y $y -w $w -l $numlines \
     -sa 'c' -ta 'c'\
     -fg "#EEEEEE"\
     -title-name 'dictionary'\
-    -e 'onstart=uncollapse,grabkeys,scrollhome;key_Down=scrolldown;key_Up=scrollup;button4=scrolldown;key_Escape=exit;button1=exit;button3=exit;key_q=exit;key_j=scrolldown;key_k=scrollup'\
+    -e 'onstart=uncollapse,grabkeys,scrollhome;\
+        key_Up=scrollup;\
+        key_k=scrollup;\
+        key_Down=scrolldown;\
+        button4=scrolldown;\
+        key_j=scrolldown;\
+        key_Escape=exit;\
+        button1=exit;\
+        button3=exit;\
+        key_q=exit'\
     -fn "$font"
 }
 
@@ -29,7 +42,8 @@ translate()
 # get the previous & current selection
 old=$(cat "$f"); current=$(xsel -o)
 if [ "$old" = "$current" ]; then
-  showdzen $(dmenu -noinput -x $x -y $y -w $w -p "Translate: " -fn "$font" -sb "#000000")
+    showdzen $(dmenu -noinput -x $x -y $y -w $w\
+                     -p "Translate: " -fn "$font" -sb "#000000")
 else
   # if selection changed, store the current selection to remember
   echo "$current" > "$f"
