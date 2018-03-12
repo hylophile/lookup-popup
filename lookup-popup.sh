@@ -4,9 +4,16 @@
 f=~/.old_sel
 touch $f
 x=390
-y=100
+y=650
 w=500
 font="Inconsolata:size=12"
+seconds=3
+
+if [ "$1" != "" ]; then
+	showdzen $1
+	return 1
+fi
+
 
 showdzen()
 {
@@ -15,9 +22,10 @@ showdzen()
         return 1
     fi
     translation=$(translate $query)
-    numlines=$(($(echo -e "$translation" | wc -l) - 1))
+    # numlines=$(($(echo -e "$translation" | wc -l) - 1))
+    numlines=5
     echo "${query}:$(translate $query)" |
-    dzen2 -p 5 -x $x -y $y -w $w -l $numlines \
+    dzen2 -p $seconds -x $x -y $y -w $w -l $numlines \
     -sa 'c' -ta 'c'\
     -fg "#EEEEEE"\
     -title-name 'dictionary'\
@@ -28,6 +36,7 @@ showdzen()
         button4=scrolldown;\
         key_j=scrolldown;\
         key_Escape=exit;\
+        key_Enter=exit;\
         button1=exit;\
         button3=exit;\
         key_q=exit'\
