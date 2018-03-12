@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#check xsel output every second, and if changed, execute lookup-popup
 
 sel=$(xsel)
 selnew=""

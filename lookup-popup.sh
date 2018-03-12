@@ -9,10 +9,6 @@ w=500
 font="Inconsolata:size=12"
 seconds=3
 
-if [ "$1" != "" ]; then
-	showdzen $1
-	return 1
-fi
 
 
 showdzen()
@@ -47,6 +43,12 @@ translate()
 {
     echo "$(python2 /home/ergo/bin/dict.cc.py en de "$@")"
 }
+
+#when called with argument from watchselection.sh
+if [ "$1" != "" ]; then
+	showdzen "$1"
+	exit
+fi
 
 # get the previous & current selection
 old=$(cat "$f"); current=$(xsel -o)
