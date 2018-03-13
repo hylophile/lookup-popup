@@ -7,8 +7,7 @@ selnew=""
 while true; do
 	selnew=$(xsel)
 	if [ "$sel" != "$selnew" ]; then
-		echo $selnew
-		./lookup-popup.sh $selnew
+		$HOME/projects/lookup-popup/lookup-popup.sh $selnew
 	fi
 	sel=$selnew
 	sleep 1
